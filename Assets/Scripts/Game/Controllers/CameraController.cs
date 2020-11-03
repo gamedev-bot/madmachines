@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (player.transform.position.x >= transform.position.x)
+        if (player && player.transform.position.x >= transform.position.x)
         {
             transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
         }
