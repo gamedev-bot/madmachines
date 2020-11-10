@@ -15,6 +15,7 @@ public class TerrainLoop : MonoBehaviour
     private float width;
     private float height;
     private int countOfNodes = 1;
+    private int lastVariationOfGeneratedNode = 1;
 
     private void Start()
     {
@@ -40,9 +41,24 @@ public class TerrainLoop : MonoBehaviour
         }
     }
 
+    int getNextNodeVariation() {
+        int nextNodeNumber;
+
+        do
+        {
+            nextNodeNumber = Random.Range(2, countOfPrefabs + 1);
+        } while (nextNodeNumber == lastVariationOfGeneratedNode);
+
+        lastVariationOfGeneratedNode = nextNodeNumber;
+
+        Debug.Log("Next Node: " + nextNodeNumber);
+
+        return nextNodeNumber;
+    }
+
     void generateNextNodes()
     {
-        int nextNodeNumber = Random.Range(1, countOfPrefabs + 1);
+        int nextNodeNumber = getNextNodeVariation();
 
         GameObject nextNode = Instantiate(
             Resources.Load("prefabs/Terrain/Node" + nextNodeNumber),
