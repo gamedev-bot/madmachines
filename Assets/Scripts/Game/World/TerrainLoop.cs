@@ -10,6 +10,9 @@ public class TerrainLoop : MonoBehaviour
     public float offsetRight = 0;
     public int countOfPrefabs = 2;
 
+    public float generateNextTrigger = 10f;
+    public float removePrevTrigger = 100f;
+
     private float x1;
     private float x2;
     private float width;
@@ -29,13 +32,13 @@ public class TerrainLoop : MonoBehaviour
 
     void Update()
     {
-        if (camera.transform.position.x + (width / 2) > x2 - 4)
+        if (camera.transform.position.x + (width / 2) > x2 - generateNextTrigger)
         {
             generateNextNodes();
             updateEdgesCoordinates();
         }
 
-        if (camera.transform.position.x > (x1 + 100))
+        if (camera.transform.position.x > (x1 + removePrevTrigger))
         {
             removeLeftNode();
         }
@@ -56,6 +59,20 @@ public class TerrainLoop : MonoBehaviour
         return nextNodeNumber;
     }
 
+    void spawnBridge(GameObject nextNode) {
+
+        float positionX = nextNode.transform.position.x - 2.69f;
+        float positionY = nextNode.transform.position.y + 3.32f;
+
+        GameObject bridge = Instantiate(
+            Resources.Load("prefabs/Terrain/Bridge"),
+            new Vector3(positionX, positionY, nextNode.transform.position.z),
+            Quaternion.identity
+        ) as GameObject;
+
+        bridge.transform.SetParent(nextNode.transform);
+    }
+
     void generateNextNodes()
     {
         int nextNodeNumber = getNextNodeVariation();
@@ -73,6 +90,8 @@ public class TerrainLoop : MonoBehaviour
         nextNode.name = "Node" + countOfNodes;
 
         int setupNumber = Random.Range(1, 4);
+
+        spawnBridge(nextNode);
 
         if (setupNumber < 4)
         {

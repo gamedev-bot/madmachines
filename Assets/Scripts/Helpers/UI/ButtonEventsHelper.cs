@@ -2,8 +2,8 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class ButtonEventsHelper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
-{
+public class ButtonEventsHelper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+
     public UnityEvent OnTouchStart;
     public UnityEvent OnTouchEnd;
 

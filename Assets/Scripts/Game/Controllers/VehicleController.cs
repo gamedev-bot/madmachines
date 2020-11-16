@@ -8,10 +8,40 @@ public class VehicleController : MonoBehaviour
     public WheelJoint2D rightWheel;
 
     private float movement = 0f;
+    private bool isGasActive = false;
+    private bool isBrakeActive = false;
 
     void Update()
     {
-        movement = -1 * Input.GetAxisRaw("Horizontal") * speed;
+        if (isBrakeActive)
+        {
+            movement = 1 * speed;
+        }
+        else if (isGasActive)
+        {
+            movement = -1 * speed;
+        }
+        else
+        {
+            //movement = 0f;
+            movement = -1 * Input.GetAxisRaw("Horizontal") * speed;
+        }
+    }
+
+    public void OnGasStart() {
+        isGasActive = true;
+    }
+
+    public void OnGasEnd() {
+        isGasActive = false;
+    }
+
+    public void OnBrakeStart() {
+        isBrakeActive = true;
+    }
+
+    public void OnBrakeEnd() {
+        isBrakeActive = false;
     }
 
     private void FixedUpdate()
@@ -40,3 +70,4 @@ public class VehicleController : MonoBehaviour
         }
     }
 }
+
