@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.U2D;
 
 public class TerrainLoop : MonoBehaviour
@@ -54,8 +52,6 @@ public class TerrainLoop : MonoBehaviour
 
         lastVariationOfGeneratedNode = nextNodeNumber;
 
-        Debug.Log("Next Node: " + nextNodeNumber);
-
         return nextNodeNumber;
     }
 
@@ -95,7 +91,7 @@ public class TerrainLoop : MonoBehaviour
 
         if (setupNumber < 4)
         {
-            //nextNode.transform.Find("Setup" + setupNumber).gameObject.active = true;
+            nextNode.transform.Find("Setup" + setupNumber).gameObject.active = true;
         }
     }
 
@@ -103,7 +99,7 @@ public class TerrainLoop : MonoBehaviour
     {
         GameObject leftTerrainNode = transform.GetChild(0).gameObject;
 
-        float nodeWidth = calculateTerrainNodeWidth(leftTerrainNode) - offsetRight;
+        float nodeWidth = calculateTerrainNodeWidth(leftTerrainNode) + offsetRight;
 
         Destroy(leftTerrainNode);
 
@@ -138,8 +134,6 @@ public class TerrainLoop : MonoBehaviour
         GameObject terrainNode = transform.GetChild(transform.childCount - 1).gameObject;
 
         float terrainWidth = calculateTerrainNodeWidth(terrainNode);
-
-        Debug.Log(terrainWidth);
 
         if (countOfNodes > 1)
         {

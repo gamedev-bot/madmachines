@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Terrain")
         {
-            Debug.Log("You've died.");
+            //Debug.Log("You've died.");
         }
     }
 }

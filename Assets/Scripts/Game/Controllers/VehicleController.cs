@@ -7,9 +7,17 @@ public class VehicleController : MonoBehaviour
     public WheelJoint2D leftWheel;
     public WheelJoint2D rightWheel;
 
+    public GameObject screenWrapper;
+    private UIController uiController;
+
     private float movement = 0f;
     private bool isGasActive = false;
     private bool isBrakeActive = false;
+
+    void Start()
+    {
+        uiController = screenWrapper.GetComponent<UIController>();
+    }
 
     void Update()
     {
@@ -25,6 +33,20 @@ public class VehicleController : MonoBehaviour
         {
             //movement = 0f;
             movement = -1 * Input.GetAxisRaw("Horizontal") * speed;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Item_Canister")
+        {
+            uiController.IncrementGasValue(10);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "Item_Coin")
+        {
+            uiController.IncrementCoinValue(1);
+            Destroy(collision.gameObject);
         }
     }
 
@@ -68,6 +90,7 @@ public class VehicleController : MonoBehaviour
             rightWheel.motor = motor;
             leftWheel.motor = motor;
         }
+
     }
 }
 

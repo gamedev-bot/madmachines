@@ -7,6 +7,8 @@ TagManager:
   - Terrain
   - Vehicle
   - PlayerHead
+  - Item_Canister
+  - Item_Coin
   layers:
   - Default
   - TransparentFX
