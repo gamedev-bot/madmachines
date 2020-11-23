@@ -8,6 +8,9 @@ public class UIController : MonoBehaviour
     public GameObject gasPanel;
     public GameObject coinPanel;
 
+    public GameObject fade;
+    public GameObject pauseWindow;
+
     private int gasCapacity = 150;
     private int gasValue = 100;
     private int gasProgressBar = 100;
@@ -69,5 +72,17 @@ public class UIController : MonoBehaviour
         }
 
         rectTransform.sizeDelta = new Vector2(15 + (3.35f * (float)gasProgressBar), rectTransform.sizeDelta.y);
+    }
+
+    public void onPressPause() {
+        Time.timeScale = 0;
+        fade.gameObject.active = true;
+        pauseWindow.gameObject.active = true;
+    }
+
+    public void onPressResume() {
+        Time.timeScale = 1;
+        fade.gameObject.active = false;
+        pauseWindow.gameObject.active = false;
     }
 }
