@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIController : MonoBehaviour
@@ -10,8 +11,13 @@ public class UIController : MonoBehaviour
 
     public GameObject fade;
     public GameObject pauseWindow;
+    public GameObject gameOverWindow;
 
-    private int gasCapacity = 150;
+    public GameObject globalVolume;
+
+    public PlayerController playerController;
+
+    private int gasCapacity = 100;
     private int gasValue = 100;
     private int gasProgressBar = 100;
     private int coinValue = 0;
@@ -24,6 +30,12 @@ public class UIController : MonoBehaviour
     {
         GameObject gasProgress = gasPanel.transform.GetChild(0).gameObject;
         rectTransform = gasProgress.GetComponent<RectTransform>();
+
+        IncrementCoinValue(PlayerPrefs.GetInt("coinValue", 0));
+
+        string graphicsOptions = PlayerPrefs.GetString("graphicsOptions", "HIGH");
+
+        globalVolume.gameObject.active = (graphicsOptions == "HIGH");
     }
 
     private void SetGasValue(int progress) {
@@ -46,6 +58,8 @@ public class UIController : MonoBehaviour
 
         coinValue += count;
 
+        PlayerPrefs.SetInt("coinValue", coinValue);
+
         textMesh.text = "" + coinValue;
     }
 
@@ -53,9 +67,10 @@ public class UIController : MonoBehaviour
     {
         gasValue += count;
 
-        if(gasValue <= 0)
+        if(gasValue < 0)
         {
-            Debug.Log("Gas is left.");
+            _pauseGame();
+            _showWindow(gameOverWindow);
             return;
         }
 
@@ -75,14 +90,55 @@ public class UIController : MonoBehaviour
     }
 
     public void onPressPause() {
-        Time.timeScale = 0;
-        fade.gameObject.active = true;
-        pauseWindow.gameObject.active = true;
+        _pauseGame();
+        _showWindow(pauseWindow);
     }
 
     public void onPressResume() {
-        Time.timeScale = 1;
+        _resumeGame();
+        _hideWindow(pauseWindow);
+    }
+
+    public void onPressReborn() {
+        playerController.Respawn();
+        _resumeGame();
+        _hideWindow(gameOverWindow);
+    }
+
+    public void onPressNewGame()
+    {
+        _resumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void onPressGoMainMenu()
+    {
+        _resumeGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    public void onDie() {
+        _pauseGame();
+        _showWindow(gameOverWindow);
+    }
+
+    private void _showWindow(GameObject window)
+    {
+        fade.gameObject.active = true;
+        window.gameObject.active = true;
+    }
+
+    private void _hideWindow(GameObject window)
+    {
         fade.gameObject.active = false;
-        pauseWindow.gameObject.active = false;
+        window.gameObject.active = false;
+    }
+
+    private void _pauseGame() {
+        Time.timeScale = 0;
+    }
+
+    private void _resumeGame() {
+        Time.timeScale = 1;
     }
 }
